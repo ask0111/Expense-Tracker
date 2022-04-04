@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .heading {
+            text-align: center;
+            font-size: 50px;
+            color: blue;
+            text-decoration: 1px solid blue;
+        }
+
+        .detail {
+            /* border: 1px solid red; */
+            display: flex;
+            /* margin: 40px; */
+            height: 70vh;
+            display: block;
+            
+        }
+        .detail form{
+            width: 20%;
+            justify-content: center;
+            /* background-color: teal; */
+            margin: auto;
+            height: 60vh;
+
+        }
+        #containerSlides{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            /* border: 1px solid green; */
+            /* background-color: aqua; */
+            gap: 10px;
+        }
+        #containerSlides div{
+            width: 100%;
+            height: 50vh;
+            background-color: whitesmoke;
+            /* box-shadow: inset ; */
+            box-shadow: 10px 5px 5px red;
+            /* margin-left: 10px; */
+            /* padding: 20px; */
+        }
+        
+    </style>
+</head>
+
+<body>
+    <h1 class="heading">EXPENSE TRACKER</h1>
+    <div class="detail">
+        <form>
+            <h1>Select Month</h1>
+            <select name="month" id="monthSelect">
+                <option value="january">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="Octomber">Octomber</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+            </select>
+            <h1>Income</h1>
+            <input id="incomeDetail" type="number" placeholder="Enter income in Rs ">
+            <h1>Expense</h1>
+            <input id="expenseDetail" type="number" placeholder="Enter expense in Rs">
+            <!-- <input type="submit"> -->
+            <button onclick="formFun()">click</button>
+        </form>
+    </div>
+
+    <div id="containerSlides">
+
+    </div>
+
+</body>
+<script type="text/javascript">
+    function formFun() {
+        event.preventDefault();
+
+        var box = document.createElement('div');
+        var month = document.createElement('h1');
+        var income = document.createElement('p');
+        var expence = document.createElement('p');
+        var total = document.createElement('p');
+
+        var monthInput = document.querySelector("#monthSelect");
+        month.innerText = monthInput.value;
+
+        var incomeInput = document.querySelector("#incomeDetail");
+        income.innerText = `Your income is Rs. ${incomeInput.value}`
+
+        var expenseInput = document.querySelector("#expenseDetail");
+        expence.innerText = `Your expense is Rs. ${expenseInput.value}`;
+
+        total.innerText = `Your Savings are Rs. ${incomeInput.value - expenseInput.value}`
+
+        box.append(month, income, expence, total);
+        document.querySelector("#containerSlides").append(box);
+        localStorage.setItem('a' , box);
+        // console.log(monthInput.value, incomeInput.value, expenseInput.value);
+        // document.querySelector(".container").style.gridTemplateColumn = 'repeate(4, 1fr)'
+
+    }
+</script>
+
+</html>
