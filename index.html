@@ -9,42 +9,62 @@
     <style>
         .heading {
             text-align: center;
-            font-size: 50px;
+            font-size: 60px;
             color: blue;
-            text-decoration: 1px solid blue;
+            text-decoration: underline;
         }
-
         .detail {
-            /* border: 1px solid red; */
+            height: 500px;
             display: flex;
-            /* margin: 40px; */
-            height: 70vh;
-            display: block;
-            
         }
         .detail form{
-            width: 20%;
-            justify-content: center;
-            /* background-color: teal; */
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0 0 20px 1px rgba(215, 233, 233, 0.8);
+            font-size: 20px;
+            width: 24%;
+            height: 450px;
+            padding-left: 60px;
             margin: auto;
-            height: 60vh;
+            
+        }
+        .detail form select, .detail form input{
+            font-size: inherit;
+            width: 80%;
+            height: 30px;
+            margin: 0;
+        }
+        .detail form select, .detail form input, .detail form h1{
+            margin-bottom: 6px;
+        }
+        #btn{
+            font-size: 30px;
+            color: white;
+            width: 82%;
+            height: 50px;
+            border-radius: 15px;
+            display: block;
+            margin-top: 20px;
+            background-color: blue;
 
         }
         #containerSlides{
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            /* border: 1px solid green; */
-            /* background-color: aqua; */
-            gap: 10px;
+            margin: auto;
+            margin-top: 40px;
+            width: 80%;
+            row-gap: 20px;
+            column-gap: 50px;
         }
         #containerSlides div{
+            padding-left: 30px;
+            font-size: 30px;
             width: 100%;
-            height: 50vh;
+            height: 400px;
             background-color: whitesmoke;
-            /* box-shadow: inset ; */
-            box-shadow: 10px 5px 5px red;
-            /* margin-left: 10px; */
-            /* padding: 20px; */
+            box-shadow: inset 0 0 20px 0.4px rgb(202, 207, 207);
+            color: rgb(2, 41, 2);
         }
         
     </style>
@@ -73,8 +93,7 @@
             <input id="incomeDetail" type="number" placeholder="Enter income in Rs ">
             <h1>Expense</h1>
             <input id="expenseDetail" type="number" placeholder="Enter expense in Rs">
-            <!-- <input type="submit"> -->
-            <button onclick="formFun()">click</button>
+            <button id="btn" onclick="formFun()">Submit</button>
         </form>
     </div>
 
@@ -84,32 +103,78 @@
 
 </body>
 <script type="text/javascript">
+    var dataObj;
+    if(localStorage.getItem('storageData') == null){
+        dataObj = [];
+    }else{
+        dataObj = JSON.parse(localStorage.getItem('storageData'))
+    }
+    
     function formFun() {
         event.preventDefault();
-
+        var mI ;
+        var incI ;
+        var exI ;
+        var tI ;
+        var monthInput = document.querySelector("#monthSelect");
+        var incomeInput = document.querySelector("#incomeDetail");
+        var expenseInput = document.querySelector("#expenseDetail");
+        mI = monthInput.value;
+        incI = `Your income is Rs. ${incomeInput.value}`;
+        exI = `Your expense is Rs. ${expenseInput.value}`;
+        tI = `Your Savings are Rs. ${incomeInput.value - expenseInput.value}`
+        
+        var localObj ={
+            m: `${mI}`,
+            inc: `${incI}`,
+            ex: `${exI}`,
+            t: `${tI}`,
+        };
+        
         var box = document.createElement('div');
         var month = document.createElement('h1');
         var income = document.createElement('p');
         var expence = document.createElement('p');
         var total = document.createElement('p');
-
-        var monthInput = document.querySelector("#monthSelect");
-        month.innerText = monthInput.value;
-
-        var incomeInput = document.querySelector("#incomeDetail");
-        income.innerText = `Your income is Rs. ${incomeInput.value}`
-
-        var expenseInput = document.querySelector("#expenseDetail");
-        expence.innerText = `Your expense is Rs. ${expenseInput.value}`;
-
-        total.innerText = `Your Savings are Rs. ${incomeInput.value - expenseInput.value}`
-
+        
+        month.innerText = mI;
+        income.innerText = incI;
+        expence.innerText = exI;
+        total.innerText = tI;
+        month.style.color = 'green'
+        income.style.color = "rgb(36, 91, 36)";
+        expence.style.color = "red";
+        total.style.color = "rgb(2, 41, 2)";
+        
         box.append(month, income, expence, total);
         document.querySelector("#containerSlides").append(box);
-        localStorage.setItem('a' , box);
-        // console.log(monthInput.value, incomeInput.value, expenseInput.value);
-        // document.querySelector(".container").style.gridTemplateColumn = 'repeate(4, 1fr)'
-
+        dataObj.push(localObj);
+        localStorage.setItem('storageData', JSON.stringify(dataObj));
+    }
+    
+    
+    
+    if(dataObj.length !== 0){
+        dataObj.forEach((el, i) => {
+            var box = document.createElement('div');
+            var month = document.createElement('h1');
+            var income = document.createElement('p');
+            var expence = document.createElement('p');
+            var total = document.createElement('p');
+            
+            var orignalObj = el;
+            month.innerText = orignalObj.m;
+            income.innerText = orignalObj.inc;
+            expence.innerText = orignalObj.ex;
+            total.innerText = orignalObj.t;
+            month.style.color = 'green'
+            income.style.color = "rgb(36, 91, 36)";
+            expence.style.color = "red";
+            total.style.color = "rgb(2, 41, 2)";
+            
+            box.append(month, income, expence, total);
+            document.querySelector("#containerSlides").append(box);
+        });
     }
 </script>
 
